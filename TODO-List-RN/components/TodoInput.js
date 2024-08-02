@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { SafeAreaView, TextInput, Button, StyleSheet } from 'react-native';
 
 const TodoInput = ({ addTodo }) => {
     const [task, setTask] = useState('');
@@ -12,24 +12,23 @@ const TodoInput = ({ addTodo }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <TextInput
                 style={styles.input}
                 value={task}
                 onChangeText={(text) => setTask(text)}
-                placeholder="Escribi lo que tenes que hacer"
+                placeholder="Escriba lo que tiene que hacer"
             />
-            <Button
-                title="Enviar"
-                onPress={handleSubmit}
-            />
-        </View>
+            <Button title="Enviar" onPress={handleSubmit} />
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
+        
+        justifyContent: 'center',  
+        paddingHorizontal: 16,  
     },
     input: {
         height: 40,

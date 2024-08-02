@@ -1,43 +1,31 @@
 import React from 'react';
-import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import TodoItem from './TodoItem'; 
+import { FlatList, StyleSheet, View, Button } from 'react-native';
+import TodoItem from './TodoItem';
 
-const TodoList = ({ todos, toggleTodo, showFastest }) => {
+const TodoList = ({ todos, toggleTodo, showFastest, removeTodo }) => {
     return (
         <View style={styles.container}>
             <FlatList
                 data={todos}
-                keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
                     <TodoItem
+                        key={index}
                         todo={item}
                         toggleTodo={() => toggleTodo(index)}
+                        onDelete={() => removeTodo(index)}
                     />
                 )}
-                ListEmptyComponent={<Text>No hay tareas disponibles.</Text>}
+                keyExtractor={(item, index) => index.toString()}
             />
-            <TouchableOpacity style={styles.button} onPress={showFastest}>
-                <Text style={styles.buttonText}>Mostrar Tarea Más Rápida</Text>
-            </TouchableOpacity>
+            <Button title="Mostrar Tarea Más Rápida" onPress={showFastest} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+       
         padding: 16,
-    },
-    button: {
-        backgroundColor: '#007bff',
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 16,
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
     },
 });
 

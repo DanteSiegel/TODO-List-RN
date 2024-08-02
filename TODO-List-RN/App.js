@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList'; 
+import TodoList from './components/TodoList';
+import Title from './components/Titulo';  
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const App = () => {
     const [todos, setTodos] = useState([]);
@@ -30,6 +33,11 @@ const App = () => {
         setTodos(newTodos);
     };
 
+    const removeTodo = (index) => {
+        const newTodos = todos.filter((_, i) => i !== index);
+        setTodos(newTodos);
+    };
+
     const showFastest = () => {
         const completedTodos = todos.filter((todo) => todo.completado && todo.fechaTachado !== null);
         if (completedTodos.length > 0) {
@@ -38,37 +46,28 @@ const App = () => {
                 const currDuration = curr.fechaTachado - curr.fechaCreacion;
                 return prevDuration < currDuration ? prev : curr;
             });
-            Alert.alert(
-                'Tarea Más Rápida',
-                `La tarea más rápida en realizarse fue: ${fastest.texto} - Tiempo: ${(fastest.fechaTachado - fastest.fechaCreacion) / 1000} segundos`
-            );
+            alert(`La tarea más rápida en realizarse fue: ${fastest.texto} - Tiempo: ${(fastest.fechaTachado - fastest.fechaCreacion) / 1000} segundos`);
         } else {
-            Alert.alert('No hay tareas completadas para mostrar.');
+            alert('No hay tareas completadas para mostrar.');
         }
     };
 
     return (
+      <GestureHandlerRootView style={styles.container}>
         <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <Text style={styles.header}>Lista de Tareas</Text>
-                <TodoInput addTodo={addTodo} />
-                <TodoList todos={todos} toggleTodo={toggleTodo} showFastest={showFastest} />
-            </ScrollView>
+          <Title />
+          <TodoInput addTodo={addTodo} />
+          <TodoList todos={todos} toggleTodo={toggleTodo} showFastest={showFastest} removeTodo={removeTodo} />
         </SafeAreaView>
+      </GestureHandlerRootView>
     );
-};
-
-const styles = StyleSheet.create({
+    };
+  
+  const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 16,
+      flex: 1,
+      padding: 16,
     },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-        textAlign: 'center',
-    },
-});
+  });
 
 export default App;
